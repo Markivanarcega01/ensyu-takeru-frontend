@@ -44,7 +44,7 @@ export default function AddPartNumberModal() {
             >
                 <Box sx={style}>
                     <p className='bg-blue-500 p-4 rounded-t-md text-white'>Add Part number</p>
-                    <form ref={ref} action={(formData) => {
+                    <form ref={ref} action={async(formData) => {
                         formAction(formData)
                         ref.current?.reset()
                     }} className='flex flex-col gap-y-5 p-4'>

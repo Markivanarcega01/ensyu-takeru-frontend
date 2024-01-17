@@ -44,7 +44,7 @@ export default async function PartNumber() {
                                     <td>{part.material}</td>
                                     <td>
                                         <div className="flex flex-row gap-x-2">
-                                            <EditPartNumberModal />
+                                            <EditPartNumberModal data={[part.id,part.part_number,part.ecn_number,part.material]}/>
                                             <button className="text-red-500 border border-red-500 rounded"><DeleteIcon /></button>
                                         </div>
                                     </td>
@@ -56,7 +56,6 @@ export default async function PartNumber() {
                                 <td className="w-52">XXXX-XXXXX</td>
                                 <td className="w-52">
                                     <div className="flex flex-row gap-x-2">
-                                        <EditPartNumberModal />
                                         <button className="text-red-500 border border-red-500 rounded"><DeleteIcon /></button>
                                     </div>
                                 </td>

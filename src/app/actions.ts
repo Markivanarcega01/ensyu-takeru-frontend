@@ -34,9 +34,11 @@ export async function loginForm(state: string, formData: FormData) {
     redirect('/homepage')
 }
 
-export async function verifyToken(token: string) {
-    const id = parseInt(token)
+export async function verifyToken() {
+    const token = cookies().get('token')
+    const deleteCookies = cookies().delete('token')
     try {
+        const id:number = parseInt(token?.value!)/1
         const { data } = await axios.get(`http://localhost:3000/users/${id}`)
         console.log(data)
         if (data.username) {
@@ -44,7 +46,8 @@ export async function verifyToken(token: string) {
         }
         return false
     } catch (error: any) {
-        console.log(error)
+        console.log('Error')
+        //deleteCookies
         return false
     }
 }
@@ -157,6 +160,34 @@ export async function createPartNumber(state:string,formData:FormData){
         return 'Error in creating a part number'
     }
 }
+
+export async function updatePartNumber(state:string,formData:FormData){
+    const id = formData.get('id')
+    const dataFromUserForm: any = {
+        partNumber: formData.get('partNumber')?.toString().trim(),
+        formula: formData.get('formula')?.toString().trim(),
+        material: formData.get('material')?.toString().trim(),
+    }
+    for (const property in dataFromUserForm) {
+        // console.log(dataFromUserForm[property])
+        if (!dataFromUserForm[property]) {
+            return state = 'Fields are missing'
+        }
+    }
+    try {
+        const {data} = await axios.patch(`http://localhost:3000/part-number/${id}`,{
+            part_number:dataFromUserForm.partNumber,
+            ecn_number:dataFromUserForm.formula,
+            material:dataFromUserForm.material
+        })
+        state = data
+        revalidatePath('/part-number')
+        return state
+    } catch (error) {
+        return 'Error in updating a part number'
+    }
+}
+
 
 export async function createEntry(prevState: { message: string }, formData: FormData) {
     try {
