@@ -188,6 +188,19 @@ export async function updatePartNumber(state:string,formData:FormData){
     }
 }
 
+export async function deletePartNumber(state:string,formData:FormData){
+    const id = formData.get('id')
+    try {
+        const data = axios.delete(`http://localhost:3000/part-number/${id}`)
+        revalidatePath('/part-number')
+        return state = 'Part number successfully deleted'
+    } catch (error : any) {
+        console.log(error)
+        return state = 'Error in request'
+    }
+}
+
+//End of part number
 
 export async function createEntry(prevState: { message: string }, formData: FormData) {
     try {

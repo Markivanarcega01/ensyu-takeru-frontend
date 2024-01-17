@@ -4,6 +4,7 @@ import AddPartNumberModal from "./add-partnumber";
 import EditPartNumberModal from "./edit-partnumber";
 import DropdownMenu from "../dropdown";
 import axios from "axios";
+import DeletePartNumber from "./delete-partnumber";
 
 
 type PartNumber = {
@@ -45,7 +46,7 @@ export default async function PartNumber() {
                                     <td>
                                         <div className="flex flex-row gap-x-2">
                                             <EditPartNumberModal data={[part.id,part.part_number,part.ecn_number,part.material]}/>
-                                            <button className="text-red-500 border border-red-500 rounded"><DeleteIcon /></button>
+                                            <DeletePartNumber id={part.id}/>
                                         </div>
                                     </td>
                                 </tr>
