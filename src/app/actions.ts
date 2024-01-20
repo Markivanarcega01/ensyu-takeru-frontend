@@ -29,21 +29,23 @@ export async function loginForm(formData: FormData) {
     redirect('/homepage')
 }
 
-export async function verifyToken(token: string) {
-    const id = parseInt(token)
-    try {
-        //const id: number = parseInt(token?.value!) / 1
-        const { data } = await axios.get(`http://localhost:3000/users/${id}`)
-        console.log(data)
-        if (data.username) {
-            return true
-        }
-        return false
-    } catch (error: any) {
-        console.log(error)
-        return false
-    }
-}
+// export async function verifyToken() {
+//     const token = cookies().get('token')
+//     const deleteCookies = cookies().delete('token')
+//     try {
+//         //const id: number = parseInt(token?.value!) / 1
+//         const { data } = await axios.get(`http://localhost:3000/users/${id}`)
+//         console.log(data)
+//         if (data.username) {
+//             return true
+//         }
+//         return false
+//     } catch (error: any) {
+//         console.log('Error')
+//         //deleteCookies
+//         return false
+//     }
+// }
 
 export async function logoutUser() {
     const token = cookies()
@@ -168,7 +170,7 @@ export async function createPartNumber(state: string, formData: FormData) {
     }
 }
 
-export async function updatePartNumber(state: string, formData: FormData) {
+export async function updatePartNumber(state:string,formData:FormData){
     const id = formData.get('id')
     const dataFromUserForm: any = {
         partNumber: formData.get('partNumber')?.toString().trim(),

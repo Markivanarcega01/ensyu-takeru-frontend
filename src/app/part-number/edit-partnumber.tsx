@@ -4,6 +4,8 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { TextField } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useFormState, useFormStatus } from 'react-dom';
+import { updatePartNumber } from '../actions';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -18,7 +20,15 @@ const style = {
     borderRadius: '10px'
 };
 
-export default function EditPartNumberModal() {
+function UpdateButton(){
+    const {pending} = useFormStatus()
+    return(
+        <button className='bg-green-500 text-white mx-auto px-4 py-2 rounded'>{pending ? "Updating.." : "Update"}</button>
+    )
+}
+
+export default function EditPartNumberModal({data}:{data:[number,string,string,string]}) {
+    const [state, formAction] = useFormState(updatePartNumber,"")
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -33,12 +43,16 @@ export default function EditPartNumberModal() {
             >
                 <Box sx={style}>
                     <p className='bg-blue-500 p-4 rounded-t-md text-white'>Edit Part number</p>
-                    <div className='flex flex-col gap-y-5 p-4'>
-                        <TextField label="Part number" variant="outlined" size='small' />
-                        <TextField label="ETR Formula" variant="outlined" size='small' />
-                        <TextField label="Material" variant="outlined" size='small' />
-                        <button className='bg-green-500 text-white mx-auto px-4 py-2 rounded'>Save</button>
-                    </div>
+                    <form action={async(formData) => {
+                        formAction(formData)
+                    }} className='flex flex-col gap-y-5 p-4'>
+                        <input type="hidden" value={data[0]} name='id'/>
+                        <TextField label="Part number" variant="outlined" size='small' defaultValue={data[1]} name='partNumber'/>
+                        <TextField label="ETR Formula" variant="outlined" size='small' defaultValue={data[2]} name='formula'/>
+                        <TextField label="Material" variant="outlined" size='small' defaultValue={data[3]} name='material'/>
+                        <UpdateButton/>
+                        <p className='self-center'>{state}</p>
+                    </form>
                 </Box>
             </Modal>
         </>

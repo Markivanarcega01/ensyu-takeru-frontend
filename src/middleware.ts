@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
-import { verifyToken } from './app/actions'
  
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
@@ -9,7 +8,6 @@ export async function middleware(request: NextRequest) {
   const isPublicPath = path === '/login'
 
   const token = request.cookies.get('token')?.value || ''
-  // await verifyToken(token)
 
   if(isPublicPath && token){
     return NextResponse.redirect(new URL('/homepage',request.nextUrl))
