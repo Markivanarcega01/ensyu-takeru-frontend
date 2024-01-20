@@ -8,14 +8,8 @@ import { FormControl, IconButton, InputAdornment, InputLabel, OutlinedInput, Tex
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import toast from 'react-hot-toast'
 
-function SubmitButton({ username, password }: { username: string, password: string }) {
-    // const isFieldEmpty = () => {
-    //     if (!username) {
-    //         toast.error('Username is missing')
-    //     }else if(!password){
-    //         toast.error('Password is missing')
-    //     }
-    // }
+function SubmitButton() {
+
     return (
         <button type='submit' className='bg-green-500 p-2 rounded mx-5'>
             Login
@@ -24,7 +18,7 @@ function SubmitButton({ username, password }: { username: string, password: stri
 }
 
 export function LoginForm() {
-    const [state,formAction] = useFormState(loginForm,'')
+    //const [state,formAction] = useFormState(loginForm,'')
     const [username, setUsername] = useState("")
     const [password, setPassword] = useState("")
     const [showPassword, setShowPassword] = useState(false);
@@ -34,8 +28,24 @@ export function LoginForm() {
     };
 
     return (
-        <form action={formAction} className='flex flex-col w-max gap-y-5'>
-            <TextField id="username" label="Username" variant="outlined" name='username' value={username} onChange={e => setUsername(e.target.value)} required/>
+        <form action={async (formData) => {
+            const result = loginForm(formData)
+            if ((await result).state == 'Failed') {
+                return toast.error('Invalid credentials', {
+                    duration: 3000
+                })
+            }
+            // toast.promise(
+            //     result,
+            //     {
+            //       loading: 'Loading',
+            //       success: (data) => 'Login successfully',
+            //       error: (err) => 'Login failed',
+            //     },
+            //   );
+
+        }} className='flex flex-col w-max gap-y-5'>
+            <TextField id="username" label="Username" variant="outlined" name='username' value={username} onChange={e => setUsername(e.target.value)} required />
             <FormControl variant="outlined">
                 <InputLabel htmlFor="password">Password</InputLabel>
                 <OutlinedInput
@@ -60,8 +70,8 @@ export function LoginForm() {
                     label="Password"
                 />
             </FormControl>
-            <SubmitButton username={username} password={password} />
-            <p className='self-center'>{state}</p>
+            <SubmitButton />
+            {/* <p className='self-center'>{state}</p> */}
         </form>
     )
 }

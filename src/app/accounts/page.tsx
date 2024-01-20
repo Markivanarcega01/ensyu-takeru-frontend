@@ -6,6 +6,7 @@ import DropdownMenu from "../dropdown";
 import axios from "axios";
 import DeleteAccount from "./delete-account";
 import { Toaster } from "react-hot-toast";
+import { getUsers } from "../actions";
 
 enum UserRole{
     Admin,
@@ -22,7 +23,8 @@ type User = {
 }
 
 export default async function Accounts() {
-    const { data } = await axios.get('http://localhost:3000/users')
+    // const { data } = await axios.get('http://localhost:3000/users')
+    const data = await getUsers()
     return (
         <div className="pl-10 pr-5 flex flex-col pt-2 gap-y-2">
             <Toaster position={'top-center'} />
